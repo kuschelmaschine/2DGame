@@ -1,5 +1,3 @@
-from ctypes.wintypes import RGB
-from pickle import FALSE
 import pygame
 import time 
 from rendering.render_helper import RenderHelper
@@ -12,7 +10,9 @@ from rendering.render_helper import RenderHelper
 
     change color of font while rendering
 
-    make nice particles
+    particle system
+    bloom on particle system
+
 '''
 
 
@@ -160,13 +160,14 @@ while running:
     render_entity_u(tex_state, p_x, p_y, 4)
 
     # render string             the string    coords  size
-    my_big_font.render(screen, f"Fps: {render_helper.fps}", (5, 5), 1)
+    my_big_font.render(screen, f"fps: {render_helper.fps}", (5, 5), 1)
     
     
     # update display
     pygame.display.update()
         
 
+pygame.quit()
 
 
 
