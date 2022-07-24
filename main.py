@@ -5,7 +5,8 @@ from re import X
 from numpy import size
 import pygame
 import time 
-import random
+
+
 
 
 '''
@@ -33,7 +34,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption(NAME + " " + VERSION)
 
-# Funcs/Classes ---------------------------------------------- #
 def clip(surf,x,y,x_size,y_size):
     handle_surf = surf.copy()
     clipR = pygame.Rect(x,y,x_size,y_size)
@@ -72,7 +72,6 @@ class Font():
             else:
                 x_offset += self.space_width * size + self.spacing * size
 
-# Init ------------------------------------------------------- #
 
 
 
