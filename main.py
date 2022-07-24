@@ -1,8 +1,3 @@
-from ast import IsNot
-from msilib.schema import ControlCondition
-import sys
-from re import X
-from numpy import size
 import pygame
 import time 
 
