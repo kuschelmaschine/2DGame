@@ -1,4 +1,5 @@
 from ctypes.wintypes import RGB
+from pickle import FALSE
 import pygame
 import time 
 from rendering.render_helper import RenderHelper
@@ -104,6 +105,14 @@ fps = 0
 
 render_helper = RenderHelper()
 
+w_down = False
+s_down = False
+d_down = False
+a_down = False
+
+p_x: int = 40
+p_y: int = 40
+
 while running:
 
 
@@ -111,15 +120,16 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
-                pass
-            if event.key == pygame.K_s:
-                pass
-            if event.key == pygame.K_a:
-                pass
-            if event.key == pygame.K_d:
-                pass
+                w_down = event.type == pygame.KEYDOWN
+            elif event.key == pygame.K_s:
+                s_down = event.type == pygame.KEYDOWN
+            elif event.key == pygame.K_d:
+                d_down = event.type == pygame.KEYDOWN
+            elif event.key == pygame.K_a:
+                a_down = event.type == pygame.KEYDOWN
+        
         
 
     current_fps += 1
@@ -131,6 +141,15 @@ while running:
 
     render_helper.update()
         
+
+    if w_down:
+        p_y -= 1 * render_helper.delta_time
+    if s_down:
+        p_y += 1 * render_helper.delta_time
+    if d_down:
+        p_x += 1 * render_helper.delta_time
+    if a_down:
+        p_x -= 1 * render_helper.delta_time
             
     
     # reset screen
@@ -138,7 +157,7 @@ while running:
 
 
     # this is just for testing coords   size
-    render_entity_u(tex_state, 200, 200, 4)
+    render_entity_u(tex_state, p_x, p_y, 4)
 
     # render string             the string    coords  size
     my_big_font.render(screen, f"Fps: {render_helper.fps}", (5, 5), 1)
