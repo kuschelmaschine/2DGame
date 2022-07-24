@@ -27,6 +27,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
 pygame.display.set_caption(NAME + " " + VERSION)
+pygame.display.set_icon(pygame.image.load('textures\window\window_icon.png').convert_alpha())
 
 def clip(surf,x,y,x_size,y_size):
     handle_surf = surf.copy()
@@ -117,6 +118,7 @@ while running:
                 pass
             if event.key == pygame.K_d:
                 pass
+        
 
     current_fps += 1
     if time.time() - start_time >= 1 :
