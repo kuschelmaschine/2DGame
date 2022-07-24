@@ -1,6 +1,7 @@
 from ctypes.wintypes import RGB
 import pygame
 import time 
+from rendering.render_helper import RenderHelper
 
 
 
@@ -25,7 +26,6 @@ pygame.init()
 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
 pygame.display.set_caption(NAME + " " + VERSION)
 pygame.display.set_icon(pygame.image.load('textures\window\window_icon.png').convert_alpha())
 
@@ -102,6 +102,8 @@ start_time = time.time()
 current_fps = 0
 fps = 0
 
+render_helper = RenderHelper()
+
 while running:
 
 
@@ -127,15 +129,19 @@ while running:
         fps = current_fps
         current_fps = 0
 
+    render_helper.update()
         
             
     
     # reset screen
     screen.fill((35, 39, 42))
 
+
+    # this is just for testing coords   size
     render_entity_u(tex_state, 200, 200, 4)
 
-    my_big_font.render(screen, f"Fps: {fps}", (5, 5), 1)
+    # render string             the string    coords  size
+    my_big_font.render(screen, f"Fps: {render_helper.fps}", (5, 5), 1)
     
     
     # update display
@@ -143,6 +149,6 @@ while running:
         
 
 
-    
+
 
 
