@@ -11,8 +11,8 @@ class RenderHelper():
         self._last_time = 0
     def update(self):
 
-        self.delta_time = time.time() - self._last_time
-        self.delta_time *= self.fps
+        self.delta_time = (time.time() - self._last_time) * 1000
+
         self._last_time = time.time()
 
         self._current_fps += 1

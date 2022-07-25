@@ -1,6 +1,10 @@
 import pygame
 import time 
+import random
+import numpy
 from rendering.render_helper import RenderHelper
+from rendering.particles import ParticleSystem
+from rendering.particles import Particle
 
 
 
@@ -104,11 +108,15 @@ current_fps = 0
 fps = 0
 
 render_helper = RenderHelper()
+particle_system = ParticleSystem(4)
 
 w_down = False
 s_down = False
 d_down = False
 a_down = False
+
+spd = False
+
 
 p_x: int = 40
 p_y: int = 40
@@ -129,8 +137,9 @@ while running:
                 d_down = event.type == pygame.KEYDOWN
             elif event.key == pygame.K_a:
                 a_down = event.type == pygame.KEYDOWN
-        
-        
+            if event.key == pygame.K_SPACE:
+                spd = event.type == pygame.KEYDOWN
+                
 
     current_fps += 1
     if time.time() - start_time >= 1 :
@@ -142,6 +151,8 @@ while running:
     render_helper.update()
         
 
+    
+
     if w_down:
         p_y -= 1 * render_helper.delta_time
     if s_down:
@@ -150,7 +161,10 @@ while running:
         p_x += 1 * render_helper.delta_time
     if a_down:
         p_x -= 1 * render_helper.delta_time
-            
+    if spd:
+        for i in range(2):
+            particle_system.add(Particle(100, 100, random.random() * 2 - 1, random.random() * 2 -1))
+        
     
     # reset screen
     screen.fill((35, 39, 42))
@@ -160,8 +174,16 @@ while running:
     render_entity_u(tex_state, p_x, p_y, 4)
 
     # render string             the string    coords  size
-    my_big_font.render(screen, f"fps: {render_helper.fps}", (5, 5), 1)
-    
+    my_big_font.render(screen, f"fps: {render_helper.fps} particles: {len(particle_system.particles)}", (5, 5), 1)
+
+
+    particle_system.update(render_helper.delta_time)
+
+    for i in range(len(particle_system.particles)):
+        p = particle_system.particles[i]
+        pygame.draw.rect(screen, (10, 30, 200), (numpy.round(p.x), numpy.round(p.y), 10, 10))
+
+
     
     # update display
     pygame.display.update()
