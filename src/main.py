@@ -1,3 +1,4 @@
+from turtle import circle
 import pygame
 import time 
 import random
@@ -82,8 +83,11 @@ class Font():
 
 
 
-
-
+def circle_surf(radius, color):
+    surf = pygame.Surface((radius * 2, radius * 2))
+    pygame.draw.circle(surf, color, (radius, radius), radius)
+    surf.set_colorkey((0, 0, 0))
+    return surf
 
 my_big_font = Font('fonts\large_font.png')
 
@@ -108,7 +112,7 @@ current_fps = 0
 fps = 0
 
 render_helper = RenderHelper()
-particle_system = ParticleSystem(4)
+particle_system = ParticleSystem(4, True)
 
 w_down = False
 s_down = False
@@ -162,9 +166,9 @@ while running:
     if a_down:
         p_x -= 1 * render_helper.delta_time
     if spd:
-        for i in range(2):
+        for i in range(4):
             particle_system.add(Particle(100, 100, random.random() * 2 - 1, random.random() * 2 -1))
-        
+            
     
     # reset screen
     screen.fill((35, 39, 42))
@@ -177,11 +181,12 @@ while running:
     my_big_font.render(screen, f"fps: {render_helper.fps} particles: {len(particle_system.particles)}", (5, 5), 1)
 
 
-    particle_system.update(render_helper.delta_time)
+    particle_system.update(screen, render_helper.delta_time)
 
     for i in range(len(particle_system.particles)):
-        p = particle_system.particles[i]
-        pygame.draw.rect(screen, (10, 30, 200), (numpy.round(p.x), numpy.round(p.y), 10, 10))
+        #if particle_system.should_render_particle(screen, i):
+        pygame.draw.rect(screen, (10, 30, 200), ((particle_system.particles[i].x), (particle_system.particles[i].y), 10, 10))
+            #screen.blit(circle_surf(10, (0, 0, 30)), (particle_system.particles[i].x, particle_system.particles[i].y), special_flags=pygame.BLEND_RGB_ADD)
 
 
     
