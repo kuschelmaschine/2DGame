@@ -1,14 +1,9 @@
-from turtle import circle
 import pygame
-import time 
+import time
 import random
-import numpy
 from rendering.render_helper import RenderHelper
 from rendering.particles import ParticleSystem
 from rendering.particles import Particle
-
-
-
 
 '''
     TODO:
@@ -20,8 +15,6 @@ from rendering.particles import Particle
 
 '''
 
-
-
 running = True
 NAME = "2D Game"
 VERSION = "0.0.2"
@@ -30,22 +23,27 @@ HEIGHT = 600
 
 pygame.init()
 
-
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption(NAME + " " + VERSION)
 pygame.display.set_icon(pygame.image.load('textures\window\window_icon.png').convert_alpha())
 
-def clip(surf,x,y,x_size,y_size):
+
+def clip(surf, x, y, x_size, y_size):
     handle_surf = surf.copy()
-    clipR = pygame.Rect(x,y,x_size,y_size)
-    handle_surf.set_clip(clipR)
+    clip_r = pygame.Rect(x, y, x_size, y_size)
+    handle_surf.set_clip(clip_r)
     image = surf.subsurface(handle_surf.get_clip())
     return image.copy()
 
-class Font():
+
+class Font:
     def __init__(self, path):
         self.spacing = 1
-        self.character_order = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','.','-',',',':','+','\'','!','?','0','1','2','3','4','5','6','7','8','9','(',')','/','_','=','\\','[',']','*','"','<','>',';']
+        self.character_order = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+                                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+                                'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y',
+                                'z', '.', '-', ',', ':', '+', '\'', '!', '?', '0', '1', '2', '3', '4', '5', '6', '7',
+                                '8', '9', '(', ')', '/', '_', '=', '\\', '[', ']', '*', '"', '<', '>', ';']
         font_img = pygame.image.load(path).convert_alpha()
         font_img.set_colorkey((0, 0, 0))
         current_char_width = 0
@@ -82,12 +80,12 @@ class Font():
                 x_offset += self.space_width * size + self.spacing * size
 
 
-
 def circle_surf(radius, color):
     surf = pygame.Surface((radius * 2, radius * 2))
     pygame.draw.circle(surf, color, (radius, radius), radius)
     surf.set_colorkey((0, 0, 0))
     return surf
+
 
 my_big_font = Font('fonts\large_font.png')
 
@@ -97,13 +95,10 @@ tex_state: bool = False
 
 
 def render_entity_u(tex_state: bool, x: int, y: int, scale: int):
-    
     if tex_state:
         screen.blit(pygame.transform.scale(tex_0, (tex_0.get_width() * scale, tex_0.get_height() * scale)), (x, y))
-    else :
+    else:
         screen.blit(pygame.transform.scale(tex_1, (tex_1.get_width() * scale, tex_1.get_height() * scale)), (x, y))
-    
-
 
 
 start_time = time.time()
@@ -121,12 +116,10 @@ a_down = False
 
 spd = False
 
-
 p_x: int = 40
 p_y: int = 40
 
 while running:
-
 
     # handling events
     for event in pygame.event.get():
@@ -143,19 +136,15 @@ while running:
                 a_down = event.type == pygame.KEYDOWN
             if event.key == pygame.K_SPACE:
                 spd = event.type == pygame.KEYDOWN
-                
 
     current_fps += 1
-    if time.time() - start_time >= 1 :
+    if time.time() - start_time >= 1:
         start_time = time.time()
         tex_state = not tex_state
         fps = current_fps
         current_fps = 0
 
     render_helper.update()
-        
-
-    
 
     if w_down:
         p_y -= 1 * render_helper.delta_time
@@ -167,12 +156,10 @@ while running:
         p_x -= 1 * render_helper.delta_time
     if spd:
         for i in range(4):
-            particle_system.add(Particle(100, 100, random.random() * 2 - 1, random.random() * 2 -1))
-            
-    
+            particle_system.add(Particle(100, 100, random.random() * 2 - 1, random.random() * 2 - 1))
+
     # reset screen
     screen.fill((35, 39, 42))
-
 
     # this is just for testing coords   size
     render_entity_u(tex_state, p_x, p_y, 4)
@@ -180,22 +167,15 @@ while running:
     # render string             the string    coords  size
     my_big_font.render(screen, f"fps: {render_helper.fps} particles: {len(particle_system.particles)}", (5, 5), 1)
 
-
     particle_system.update(screen, render_helper.delta_time)
 
     for i in range(len(particle_system.particles)):
-        #if particle_system.should_render_particle(screen, i):
-        pygame.draw.rect(screen, (10, 30, 200), ((particle_system.particles[i].x), (particle_system.particles[i].y), 10, 10))
-            #screen.blit(circle_surf(10, (0, 0, 30)), (particle_system.particles[i].x, particle_system.particles[i].y), special_flags=pygame.BLEND_RGB_ADD)
+        # if particle_system.should_render_particle(screen, i):
+        pygame.draw.rect(screen, (10, 30, 200),
+                         ((particle_system.particles[i].x), (particle_system.particles[i].y), 10, 10))
+        # screen.blit(circle_surf(10, (0, 0, 30)), (particle_system.particles[i].x, particle_system.particles[i].y), special_flags=pygame.BLEND_RGB_ADD)
 
-
-    
     # update display
     pygame.display.update()
-        
 
 pygame.quit()
-
-
-
-
